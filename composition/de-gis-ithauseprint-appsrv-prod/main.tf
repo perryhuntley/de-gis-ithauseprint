@@ -4,7 +4,7 @@ module "map" {
 
 module "rg" {
   source   = "git::git@git.signintra.com:dct/azure/terraform-azurerm-rg.git"
-  name     = "${var.topic}-${var.stage}-rg-${var.application}-${module.map.region_map[var.location]}"
+  name     = "${var.topic}-${var.stage}-rg-${module.map.region_map[var.location]}"
   location = var.location
   tags     = local.tags
 }
@@ -47,9 +47,9 @@ module "vm" {
   storage_data_disk_account_type = ["Standard_LRS"]
   storage_data_disk_size_gb      = [512]
 
-  # data_disk2_attach               = "true"
-  # storage_data_disk2_account_type = [""]
-  # storage_data_disk2_size_gb      = []
+   data_disk2_attach               = "true"
+   storage_data_disk2_account_type = ["Standard_LRS"]
+   storage_data_disk2_size_gb      = [256]
 
   
   backup_policy_id = "${local.subscription_id_full}/resourceGroups/${local.env_prefix}-rg-spoke-${local.loc}/providers/Microsoft.RecoveryServices/vaults/${local.env_prefix}-rsv-${local.loc}/backupPolicies/${var.backup_plans["LongTerm(1year)-00:00-03:00"]}-${upper(module.map.region_map[var.location])}"
@@ -76,7 +76,7 @@ module "vm" {
   # comment below line if Grafana dashboard is not required
   grafana_enabled          = true
   # uncomment below line if Grafana Kits(folder, notification channel, team) are required
-  # grafana_kits             = true
+   grafana_kits             = true
   # uncomment below line and change the value if overwrite default dashboard user is required
   # grafana_dashboard_users = ["saint.wang@dbschenker.com"]
   # uncomment below line and change the value if overwrite default alert receive user is required
